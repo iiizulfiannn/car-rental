@@ -2,13 +2,17 @@ require("dotenv").config();
 
 import express from "express";
 import Server from "./src/index";
+import path from "path";
 
 const app = express();
 const server = new Server(app);
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
+export const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
+export const IP_ADDRESS = process.env.IP_ADDRESS || "127.0.0.1";
+
+app.use(express.static(path.join(__dirname + "/src", "resource")));
 
 app
-  .listen(PORT, "127.0.0.1", function () {
+  .listen(PORT, IP_ADDRESS, function () {
     console.log(`Server is running on port ${PORT}.`);
   })
   .on("error", (err: any) => {

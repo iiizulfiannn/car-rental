@@ -1,5 +1,4 @@
 import { Application } from "express";
-// import tutorialRoutes from "./tutorial.routes";
 import authRoutes from "./auth.routes";
 import homeRoutes from "./home.routes";
 import adminRoutes from "./admin.routes";
@@ -15,6 +14,5 @@ export default class Routes {
     app.use("/api/user", userRoutes);
     app.use("/api/car", carRoutes);
     app.use("/api/order", orderRoutes);
-    // app.use("/api/tutorials", tutorialRoutes);
   }
 }

@@ -5,6 +5,7 @@ import { fileNameImage } from "../helper/generate";
 import { unlinkSync } from "fs";
 import { readdir, unlink } from "fs/promises";
 import path from "path";
+import { IP_ADDRESS, PORT } from "../../server";
 
 export default class CarController {
   async create(req: Request, res: Response) {
@@ -41,16 +42,21 @@ export default class CarController {
     const name = typeof req.query.name === "string" ? req.query.name : "";
 
     try {
-      const car = await carRepository.retrieveAll({ name });
+      const cars = await carRepository.retrieveAll({ name });
 
-      if (!car.length) {
+      if (!cars.length) {
         res.status(404).send({
           message: "Car is empty!",
         });
         return;
       }
 
-      res.status(200).send(car);
+      const carsWithNewImageUrl = cars.map((car) => ({
+        ...car,
+        image: `http://${IP_ADDRESS}:${PORT}/image/${car.image}`,
+      }));
+
+      res.status(200).send(carsWithNewImageUrl);
     } catch (err) {
       console.log("\nfindAll ", JSON.stringify(err));
       res.status(500).send({
@@ -65,8 +71,10 @@ export default class CarController {
     try {
       const car = await carRepository.retrieveById(carId);
 
-      if (car) res.status(200).send(car);
-      else
+      if (car) {
+        car.image = `http://${IP_ADDRESS}:${PORT}/image/${car.image}`;
+        res.status(200).send(car);
+      } else
         res.status(404).send({
           message: `Cannot find Car with car carId=${carId}.`,
         });

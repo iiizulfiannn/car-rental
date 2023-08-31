@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import userRepository from "../repository/user.repository";
 import User from "../model/user.model";
+import bcrypt from "bcryptjs";
 
 export default class UserController {
   async create(req: Request, res: Response) {
@@ -22,6 +23,8 @@ export default class UserController {
         });
         return;
       }
+      user.password = bcrypt.hashSync(req.body.password, 8);
+
       const savedUser = await userRepository.save(user);
 
       res.status(201).send(savedUser);

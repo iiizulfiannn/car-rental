@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import adminRepository from "../repository/admin.repository";
 import Admin from "../model/admin.model";
+import bcrypt from "bcryptjs";
 
 export default class AdminController {
   async create(req: Request, res: Response) {
@@ -22,6 +23,7 @@ export default class AdminController {
         });
         return;
       }
+      admin.password = bcrypt.hashSync(req.body.password, 8);
       const savedAdmin = await adminRepository.save(admin);
 
       res.status(201).send(savedAdmin);

@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Aug 31, 2023 at 01:50 AM
--- Server version: 5.7.39
--- PHP Version: 8.2.0
+-- Host: localhost
+-- Generation Time: Sep 01, 2023 at 03:25 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`adminId`, `email`, `password`) VALUES
-(1, 'zulfian@gmail.com', 'admin123');
+(3, 'zuladmin@gmail.com', '$2a$08$XYLEHvQShq9Ds/kzHXvIwuZIRZcDLxHX8jrQte63GyCBd/fb7J3o.');
 
 -- --------------------------------------------------------
 
@@ -107,7 +107,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userId`, `email`, `phoneNumber`, `city`, `zip`, `message`, `password`, `username`, `address`) VALUES
-(1, 'admin133@gmail.com', '089671578276', 'Jakarta', '786372', 'saya suka OOP', 'admin123', 'admin', 'Jl. Supadio No. 12');
+(3, 'zulser@gmail.com', '089671578273', 'Bandung', '039453', 'dicipline', '$2a$08$lugRtR.huozLCcukzaefSefeuGbWPE2WXF4.za.x6CmZuBIs4niCW', 'zuluser', 'Jl Karet No. 12');
 
 --
 -- Indexes for dumped tables
@@ -148,7 +148,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `cars`
@@ -166,7 +166,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

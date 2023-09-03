@@ -41,7 +41,32 @@ class OrderRepository implements IOrderRepository {
   }
 
   retrieveAll(searchParams: { pickUpLoc?: string }): Promise<Order[]> {
-    let query: string = "SELECT * FROM orders";
+    let query: string = `
+    SELECT o.*, JSON_OBJECT(
+      'userId', u.userId,
+      'email', u.email,
+      'phoneNumber', u.phoneNumber,
+      'city', u.city,
+      'zip', u.zip,
+      'message', u.message,
+      'password', u.password,
+      'username', u.username,
+      'address', u.address
+    ) AS user, JSON_OBJECT(
+      'carId', c.carId,
+      'name', c.name,
+      'carType', c.carType,
+      'rating', c.rating,
+      'fuel', c.fuel,
+      'image', c.image,
+      'hourRate', c.hourRate,
+      'dayRate', c.dayRate,
+      'monthRate', c.monthRate
+    ) AS car
+    FROM orders o
+    INNER JOIN users u ON u.userId = o.userId
+    INNER JOIN cars c ON c.carId = o.carId
+    `;
     let condition: string = "";
 
     if (searchParams?.pickUpLoc)

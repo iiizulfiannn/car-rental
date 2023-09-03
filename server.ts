@@ -7,7 +7,7 @@ import path from "path";
 const app = express();
 const server = new Server(app);
 export const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
-export const IP_ADDRESS = process.env.IP_ADDRESS || "127.0.0.1";
+export const IP_ADDRESS = process.env.IP_ADDRESS || "192.168.3.240";
 
 app.use(express.static(path.join(__dirname + "/src", "resource")));
 

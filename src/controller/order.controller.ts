@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import orderRepository from "../repository/order.repository";
 import Order from "../model/order.model";
+import carRepository from "../repository/car.repository";
+import { IP_ADDRESS, PORT } from "../../server";
 
 export default class OrderController {
   async create(req: Request, res: Response) {
@@ -38,7 +40,15 @@ export default class OrderController {
         return;
       }
 
-      res.status(200).send(order);
+      const orders = order.map((item) => ({
+        ...item,
+        car: {
+          ...item.car,
+          image: `http://${IP_ADDRESS}:${PORT}/image/${item.car.image}`,
+        },
+      }));
+
+      res.status(200).send(orders);
     } catch (err) {
       console.log("\nfindAll ", JSON.stringify(err));
       res.status(500).send({

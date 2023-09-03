@@ -1,9 +1,11 @@
 import { Router } from "express";
 import AuthController from "../controller/auth.controller";
+import AuthJWT from "../middleware/authJwt";
 
 class AuthRoutes {
   router = Router();
   controller = new AuthController();
+  auth = new AuthJWT();
 
   constructor() {
     this.intializeRoutes();
@@ -11,10 +13,18 @@ class AuthRoutes {
 
   intializeRoutes() {
     // Sign up with role admin
-    this.router.post("/signup", this.controller.signup);
+    this.router.post(
+      "/signup",
+      // [this.auth.verifyToken],
+      this.controller.signup
+    );
 
     // Sign in with role admin
-    this.router.post("/signin", this.controller.signin);
+    this.router.post(
+      "/signin",
+      // [this.auth.verifyToken],
+      this.controller.signin
+    );
   }
 }
 

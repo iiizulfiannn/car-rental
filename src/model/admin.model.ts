@@ -4,4 +4,5 @@ export default interface Admin extends RowDataPacket {
   adminId?: number;
   email: string;
   password: string;
+  tokenNotif?: string;
 }

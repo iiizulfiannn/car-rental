@@ -28,7 +28,7 @@ class AdminRepository implements IAdminRepository {
     });
   }
 
-  retrieveAll(searchParams: { email?: string }): Promise<Admin[]> {
+  retrieveAll(searchParams?: { email?: string }): Promise<Admin[]> {
     let query: string = "SELECT * FROM admin";
     let condition: string = "";
 
@@ -63,6 +63,19 @@ class AdminRepository implements IAdminRepository {
       connection.query<ResultSetHeader>(
         "UPDATE admin SET email = ?, password = ? WHERE adminId = ?",
         [admin.email, admin.password, admin.adminId],
+        (err, res) => {
+          if (err) reject(err);
+          else resolve(res.affectedRows);
+        }
+      );
+    });
+  }
+
+  updateTokenNotif(adminId: number, tokenNotif: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+      connection.query<ResultSetHeader>(
+        "UPDATE admin SET tokenNotif = ? WHERE adminId = ?",
+        [tokenNotif, adminId],
         (err, res) => {
           if (err) reject(err);
           else resolve(res.affectedRows);

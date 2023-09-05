@@ -3,6 +3,8 @@ import orderRepository from "../repository/order.repository";
 import Order from "../model/order.model";
 import carRepository from "../repository/car.repository";
 import { IP_ADDRESS, PORT } from "../../server";
+import adminRepository from "../repository/admin.repository";
+import { blastNotification } from "../middleware/notification";
 
 export default class OrderController {
   async create(req: Request, res: Response) {
@@ -17,6 +19,16 @@ export default class OrderController {
       const order: Order = req.body;
 
       const savedOrder = await orderRepository.save(order);
+
+      if (savedOrder && req.body.role === 2) {
+        const admins = await adminRepository.retrieveAll();
+        const tokens = admins.map((item) => item.tokenNotif || "");
+        await blastNotification(
+          tokens,
+          `Create Order`,
+          `Location Pick Up ${savedOrder.pickUpLoc}`
+        );
+      }
 
       res.status(201).send(savedOrder);
     } catch (err) {
@@ -63,8 +75,17 @@ export default class OrderController {
     try {
       const order = await orderRepository.retrieveById(orderId);
 
-      if (order) res.status(200).send(order);
-      else
+      if (order) {
+        let selectOrder = {
+          ...order,
+          car: {
+            ...order.car,
+            image: `http://${IP_ADDRESS}:${PORT}/image/${order.car.image}`,
+          },
+        };
+
+        res.status(200).send(selectOrder);
+      } else
         res.status(404).send({
           message: `Cannot find Order with order orderId=${orderId}.`,
         });
@@ -83,6 +104,16 @@ export default class OrderController {
       const num = await orderRepository.update(order);
 
       if (num == 1) {
+        if (req.body.role === 2) {
+          const admins = await adminRepository.retrieveAll();
+          const tokens = admins.map((item) => item.tokenNotif || "");
+          await blastNotification(
+            tokens,
+            `Update Order`,
+            `Location Pick Up ${req.body.pickUpLoc}`
+          );
+        }
+
         res.send({
           message: "Order was updated successfully.",
         });

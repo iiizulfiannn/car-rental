@@ -98,11 +98,13 @@ export default class CarController {
           message: "Car was updated successfully.",
         });
       } else {
+        console.log("\nerr.car.update.controller ");
         res.status(404).send({
           message: `Cannot update Car with carId=${car.carId}. Maybe Car was not found or req.body is empty!`,
         });
       }
     } catch (err) {
+      console.log("\nerr.car.update.controller ", JSON.stringify(err));
       res.status(500).send({
         message: `Error updating Car with carId=${car.carId}.`,
       });

@@ -95,8 +95,10 @@ class CarRepository implements ICarRepository {
           car.carId,
         ],
         (err, res) => {
-          if (err) reject(err);
-          else resolve(res.affectedRows);
+          if (err) {
+            console.log("\nerr.car.update.repository ", JSON.stringify(err));
+            reject(err);
+          } else resolve(res.affectedRows);
         }
       );
     });

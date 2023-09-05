@@ -14,9 +14,11 @@ export default class UploadFile {
 
   private diskStorage = multer.diskStorage({
     filename: (req, file, cb) => {
+      console.log({ req, file });
       cb(null, fileNameImage(req.body.name, file.mimetype));
     },
     destination: (req, file, cb) => {
+      console.log({ req, file });
       cb(null, __dirname + "/../resource/image/");
     },
   });

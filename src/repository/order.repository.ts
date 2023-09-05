@@ -85,7 +85,33 @@ class OrderRepository implements IOrderRepository {
   retrieveById(orderId: number): Promise<Order> {
     return new Promise((resolve, reject) => {
       connection.query<Order[]>(
-        "SELECT * FROM orders WHERE orderId = ?",
+        `
+        SELECT o.*, JSON_OBJECT(
+          'userId', u.userId,
+          'email', u.email,
+          'phoneNumber', u.phoneNumber,
+          'city', u.city,
+          'zip', u.zip,
+          'message', u.message,
+          'password', u.password,
+          'username', u.username,
+          'address', u.address
+        ) AS user, JSON_OBJECT(
+          'carId', c.carId,
+          'name', c.name,
+          'carType', c.carType,
+          'rating', c.rating,
+          'fuel', c.fuel,
+          'image', c.image,
+          'hourRate', c.hourRate,
+          'dayRate', c.dayRate,
+          'monthRate', c.monthRate
+        ) AS car
+        FROM orders o
+        INNER JOIN users u ON u.userId = o.userId
+        INNER JOIN cars c ON c.carId = o.carId
+        WHERE orderId = ?
+        `,
         [orderId],
         (err, res) => {
           if (err) reject(err);

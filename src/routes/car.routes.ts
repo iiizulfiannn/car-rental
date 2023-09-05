@@ -29,7 +29,10 @@ class CarRoutes {
     // Retrieve all Cars
     this.router.get(
       "/",
-      [this.auth.verifyToken, this.auth.isAdmin],
+      [
+        this.auth.verifyToken,
+        // this.auth.isAdmin
+      ],
       this.controller.findAll
     );
 

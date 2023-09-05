@@ -34,6 +34,38 @@ export default class AdminController {
     }
   }
 
+  async updateTokenNotif(req: Request, res: Response) {
+    if (!req.body.tokenNotif || !req.body.adminId) {
+      res.status(400).send({
+        message: "Content can not be empty!",
+      });
+      return;
+    }
+
+    const adminId: number = parseInt(req.body.adminId);
+
+    try {
+      const num = await adminRepository.updateTokenNotif(
+        adminId,
+        req.body.tokenNotif
+      );
+
+      if (num == 1) {
+        res.send({
+          message: "Admin was updated successfully.",
+        });
+      } else {
+        res.status(404).send({
+          message: `Cannot update Admin with adminId=${adminId}. Maybe Admin was not found or req.body is empty!`,
+        });
+      }
+    } catch (err) {
+      res.status(500).send({
+        message: "Some error occurred while create admin.",
+      });
+    }
+  }
+
   async findAll(req: Request, res: Response) {
     const email = typeof req.query.email === "string" ? req.query.email : "";
 

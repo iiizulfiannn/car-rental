@@ -19,6 +19,13 @@ class AdminRoutes {
       this.controller.create
     );
 
+    // Create a new Admin
+    this.router.post(
+      "/notification/register",
+      [this.auth.verifyToken, this.auth.isAdmin],
+      this.controller.updateTokenNotif
+    );
+
     // Retrieve all Admins
     this.router.get(
       "/",

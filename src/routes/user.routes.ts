@@ -22,7 +22,10 @@ class UserRoutes {
     // Retrieve all Users
     this.router.get(
       "/",
-      [this.auth.verifyToken, this.auth.isAdmin],
+      [
+        this.auth.verifyToken,
+        // this.auth.isAdmin
+      ],
       this.controller.findAll
     );
 
